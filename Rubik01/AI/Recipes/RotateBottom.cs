@@ -7,29 +7,29 @@ using System.Windows.Media.Media3D;
 
 namespace Rubik01.AI.Recipes
 {
-    internal class RotateBottom : Recipe
+    internal class RotateBottom : IRecipe
     {
-        public override bool TryToApply(Cube cube, params int[] parameters) { return false; }
+        public bool TryToApply(Cube cube, params int[] parameters) { return false; }
 
-        public override void Apply(Cube cube, params int[] parameters)
+        public void Apply(Cube cube, params int[] parameters)
         {
-            var ingredientCubicles = new Cubicle[] {
-                cube.GetCubicleByCenter(Solver.solvedCube.cubicles[0, 0, 0].center),
-                cube.GetCubicleByCenter(Solver.solvedCube.cubicles[0, 0, 1].center),
-                cube.GetCubicleByCenter(Solver.solvedCube.cubicles[0, 0, 2].center),
-                cube.GetCubicleByCenter(Solver.solvedCube.cubicles[0, 1, 0].center),
-                cube.GetCubicleByCenter(Solver.solvedCube.cubicles[0, 1, 1].center),
-                cube.GetCubicleByCenter(Solver.solvedCube.cubicles[0, 1, 2].center),
-                cube.GetCubicleByCenter(Solver.solvedCube.cubicles[0, 2, 0].center),
-                cube.GetCubicleByCenter(Solver.solvedCube.cubicles[0, 2, 1].center),
-                cube.GetCubicleByCenter(Solver.solvedCube.cubicles[0, 2, 2].center),
+            var ingredientCubicles = new[] {
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 0, 0].center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 0, 1].center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 0, 2].center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 1, 0].center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 1, 1].center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 1, 2].center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 2, 0].center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 2, 1].center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 2, 2].center),
             };
 
             var rotationMatrix = new Matrix3D(0, 1, 0, 0,
                                                    -1, 0, 0, 0,
                                                    0, 0, 1, 0,
                                                    0, 0, 0, 1);
-            var centerOfRotation = Solver.solvedCube.cubicles[0, 1, 1].center;
+            var centerOfRotation = Solver.solvedCube._cubicles[0, 1, 1].center;
             for (var i = 0; i < 9; i++)
             {
                 ingredientCubicles[i].virtualCenter = (ingredientCubicles[i].virtualCenter - centerOfRotation) * rotationMatrix + centerOfRotation;
@@ -51,8 +51,7 @@ namespace Rubik01.AI.Recipes
             ingredientCubicles[8].SwapFacets(3, 0);
             ingredientCubicles[8].SwapFacets(4, 3);
 
-            cube.transformations.Append("D");
+            cube._transformations.Append("D");
         }
- 
     }
 }

@@ -83,32 +83,32 @@ namespace Rubik01.CubeComponents
             var color = Color.FromRgb(10, 10, 10);
 
             //top side triangles
-            if (i == 2) color = MainWindow.cubeColors[MainWindow.cubicleFaceColors[2, j * 3 + k]].Color;
+            if (i == 2) color = MainWindow._cubeColors[MainWindow.cubicleFaceColors[2, j * 3 + k]].Color;
             modelCube.Children.Add(CreateTriangleModel(vertices[3], vertices[2], vertices[6], color));
             modelCube.Children.Add(CreateTriangleModel(vertices[3], vertices[6], vertices[7], color));
             color = Color.FromRgb(10, 10, 10);
             //front side triangles
-            if (j == 2) color = MainWindow.cubeColors[MainWindow.cubicleFaceColors[4, (2 - i) * 3 + k]].Color;
+            if (j == 2) color = MainWindow._cubeColors[MainWindow.cubicleFaceColors[4, (2 - i) * 3 + k]].Color;
             modelCube.Children.Add(CreateTriangleModel(vertices[2], vertices[1], vertices[5], color));
             modelCube.Children.Add(CreateTriangleModel(vertices[2], vertices[5], vertices[6], color));
             color = Color.FromRgb(10, 10, 10);
             //bottom side triangles
-            if (i == 0) color = MainWindow.cubeColors[MainWindow.cubicleFaceColors[5, (2 - j) * 3 + k]].Color;
+            if (i == 0) color = MainWindow._cubeColors[MainWindow.cubicleFaceColors[5, (2 - j) * 3 + k]].Color;
             modelCube.Children.Add(CreateTriangleModel(vertices[1], vertices[0], vertices[4], color));
             modelCube.Children.Add(CreateTriangleModel(vertices[1], vertices[4], vertices[5], color));
             color = Color.FromRgb(10, 10, 10);
             //back side triangles
-            if (j == 0) color = MainWindow.cubeColors[MainWindow.cubicleFaceColors[0, i * 3 + k]].Color;
+            if (j == 0) color = MainWindow._cubeColors[MainWindow.cubicleFaceColors[0, i * 3 + k]].Color;
             modelCube.Children.Add(CreateTriangleModel(vertices[0], vertices[3], vertices[7], color));
             modelCube.Children.Add(CreateTriangleModel(vertices[0], vertices[7], vertices[4], color));
             color = Color.FromRgb(10, 10, 10);
             //right side triangles
-            if (k == 2) color = MainWindow.cubeColors[MainWindow.cubicleFaceColors[3, j * 3 + (2 - i)]].Color;
+            if (k == 2) color = MainWindow._cubeColors[MainWindow.cubicleFaceColors[3, j * 3 + (2 - i)]].Color;
             modelCube.Children.Add(CreateTriangleModel(vertices[7], vertices[6], vertices[5], color));
             modelCube.Children.Add(CreateTriangleModel(vertices[7], vertices[5], vertices[4], color));
             color = Color.FromRgb(10, 10, 10);
             //left side triangles
-            if (k == 0) color = MainWindow.cubeColors[MainWindow.cubicleFaceColors[1, j * 3 + i]].Color;
+            if (k == 0) color = MainWindow._cubeColors[MainWindow.cubicleFaceColors[1, j * 3 + i]].Color;
             modelCube.Children.Add(CreateTriangleModel(vertices[2], vertices[3], vertices[0], color));
             modelCube.Children.Add(CreateTriangleModel(vertices[2], vertices[0], vertices[1], color));
 

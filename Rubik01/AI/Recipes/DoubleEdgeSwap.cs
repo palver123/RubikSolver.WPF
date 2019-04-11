@@ -3,28 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Rubik01.CubeComponents;
-using System.Windows.Media.Media3D;
 
 namespace Rubik01.AI.Recipes
 {
     internal class DoubleEdgeSwap : Recipe
     {
-        public DoubleEdgeSwap(string code, params int[] ingredients)
+        public DoubleEdgeSwap(string code, params int[] ingredients):
+            base(code, ingredients)
         {
-            this.code = code;
-            this.ingredients = new int[ingredients.Length];
-            for (var i = 0; i < ingredients.Length; i++) this.ingredients[i] = ingredients[i];
         }
 
         public override bool TryToApply(Cube cube, params int[] parameters)
         {
-            if (ingredients.Length != 12) throw new Exception("Error, DoubleEdgeSwap does not have 4 ingredients");
-            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[0], ingredients[1], ingredients[2]].center);
-            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[3], ingredients[4], ingredients[5]].center);
-            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[6], ingredients[7], ingredients[8]].center);
-            var ingredient4 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[9], ingredients[10], ingredients[11]].center);
-            // state == 3 means bottom corner orientations are OK and every preliminary step is completed
-            if (cube.state == 3 && !ingredient1.inPlace && !ingredient2.inPlace && !ingredient3.inPlace && !ingredient4.inPlace)
+            CheckParameterCount(parameters.Length);
+
+            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]].center);
+            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]].center);
+            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]].center);
+            var ingredient4 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[9], _ingredients[10], _ingredients[11]].center);
+            // _state == 3 means bottom corner orientations are OK and every preliminary step is completed
+            if (cube._state == 3 && !ingredient1.inPlace && !ingredient2.inPlace && !ingredient3.inPlace && !ingredient4.inPlace)
             {
                 var solvedC1 = Solver.solvedCube.GetCubicleByFacetColors(ingredient1.facets).center;
                 var solvedC2 = Solver.solvedCube.GetCubicleByFacetColors(ingredient2.facets).center;
@@ -45,10 +43,16 @@ namespace Rubik01.AI.Recipes
                 ingredient3.SwapFacets(parameters[2], parameters[3]);
                 ingredient4.SwapFacets(parameters[3], parameters[2]);
 
-                cube.transformations.Append(code);
+                cube._transformations.Append(_code);
                 return true;
             }
             return false;
+        }
+
+        protected override void CheckParameterCount(int paramCount)
+        {
+            if (paramCount < 4)
+                throw new ArgumentException($"Error: {nameof(BottomEdgePosLong)} needs 4 arguments");
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Rubik01.AI
 {
     internal static class Library
     {
-        public static Recipe[] recipes = new Recipe[100];
+        public static IRecipe[] recipes = new IRecipe[100];
 
         static Library()
         {

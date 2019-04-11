@@ -3,36 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Rubik01.CubeComponents;
-using System.Windows.Media.Media3D;
 
 namespace Rubik01.AI.Recipes
 {
-    internal class BottomEdgePos : Recipe
+    internal class BottomEdgePos : RecipeWithDirection
     {
-        private readonly bool direction;
-
-        public BottomEdgePos(string code, bool direction, params int[] ingredients)
+        public BottomEdgePos(string code, bool direction, params int[] ingredients):
+            base(code, direction, ingredients)
         {
-            this.code = code;
-            this.direction = direction;
-            this.ingredients = new int[ingredients.Length];
-            for (var i = 0; i < ingredients.Length; i++) this.ingredients[i] = ingredients[i];
+            CheckIngredientCount(9);
         }
 
         public override bool TryToApply(Cube cube, params int[] parameters)
         {
-            if (ingredients.Length != 9) throw new Exception("Error, BottomRowPos does not have 3 ingredients");
-            if (parameters.Length < 6) throw new Exception("Error, BottomRowPos needs 6 arguments");
-            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[0], ingredients[1], ingredients[2]].center);
-            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[3], ingredients[4], ingredients[5]].center);
-            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[6], ingredients[7], ingredients[8]].center);
+            CheckParameterCount(parameters.Length);
+
+            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]].center);
+            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]].center);
+            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]].center);
             if (!ingredient1.inPlace && !ingredient2.inPlace && !ingredient3.inPlace)
             {
                 var solvedC1 = Solver.solvedCube.GetCubicleByFacetColors(ingredient1.facets).center;
                 var solvedC2 = Solver.solvedCube.GetCubicleByFacetColors(ingredient2.facets).center;
                 var solvedC3 = Solver.solvedCube.GetCubicleByFacetColors(ingredient3.facets).center;
 
-                if (direction)
+                if (_direction)
                 {
                     // This ensures that a rotation to the right will help
                     if (ingredient2.GetFacet(5).color == 5 || ingredient3.GetFacet(5).color == 5 || ingredient1.virtualCenter != solvedC3 || ingredient2.virtualCenter != solvedC1 || ingredient3.virtualCenter != solvedC2) return false;
@@ -65,10 +60,16 @@ namespace Rubik01.AI.Recipes
                     ingredient3.SwapFacets(5, parameters[3]);
                 }
 
-                cube.transformations.Append(code);
+                cube._transformations.Append(_code);
                 return true;
             }
             return false;
+        }
+
+        protected override void CheckParameterCount(int paramCount)
+        {
+            if (paramCount < 6)
+                throw new ArgumentException($"Error: {nameof(BottomEdgePos)} needs 6 arguments");
         }
     }
 }

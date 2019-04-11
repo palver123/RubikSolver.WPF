@@ -3,33 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Rubik01.CubeComponents;
-using System.Windows.Media.Media3D;
 
 namespace Rubik01.AI.Recipes
 {
-    internal class VerticalEdge : Recipe
+    internal class VerticalEdge : RecipeWithDirection
     {
-        private readonly bool direction;
-
-        public VerticalEdge(string code, bool direction, params int[] ingredients)
+        public VerticalEdge(string code, bool direction, params int[] ingredients):
+            base(code, direction, ingredients)
         {
-            this.code = code;
-            this.direction = direction;
-            this.ingredients = new int[ingredients.Length];
-            for (var i = 0; i < ingredients.Length; i++) this.ingredients[i] = ingredients[i];
+            CheckIngredientCount(9);
         }
 
         public override void Apply(Cube cube, params int[] parameters)
         {
-            if (ingredients.Length != 9) throw new Exception("Error, VerticalEdge does not have 3 ingredients");
-            if (parameters.Length < 2) throw new Exception("Error, Vertical Edge needs 2 arguments");
-            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[0], ingredients[1], ingredients[2]].center);
-            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[3], ingredients[4], ingredients[5]].center);
-            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[6], ingredients[7], ingredients[8]].center);
-            if (direction)
-            {
-                var solvedC1 = Solver.solvedCube.GetCubicleByFacetColors(ingredient1.facets);
+            CheckParameterCount(parameters.Length);
 
+            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]].center);
+            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]].center);
+            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]].center);
+            if (_direction)
+            {
                 var temp = ingredient1.virtualCenter;
                 ingredient1.virtualCenter = ingredient2.virtualCenter;
                 ingredient2.virtualCenter = ingredient3.virtualCenter;
@@ -44,8 +37,6 @@ namespace Rubik01.AI.Recipes
             }
             else
             {
-                var solvedC2 = Solver.solvedCube.GetCubicleByFacetColors(ingredient2.facets);
-
                 var temp = ingredient1.virtualCenter;
                 ingredient1.virtualCenter = ingredient3.virtualCenter;
                 ingredient3.virtualCenter = ingredient2.virtualCenter;
@@ -59,19 +50,25 @@ namespace Rubik01.AI.Recipes
                 ingredient3.SwapFacets(GetOppositeFacet(parameters[1]), GetOppositeFacet(parameters[0]));
             }
 
-            cube.transformations.Append(code);
+            cube._transformations.Append(_code);
+        }
+
+        protected override void CheckParameterCount(int paramCount)
+        {
+            if (paramCount < 2)
+                throw new ArgumentException($"Error: {nameof(VerticalEdge)} needs 2 arguments");
         }
 
         public override bool TryToApply(Cube cube, params int[] parameters)
         {
-            if (ingredients.Length != 9) throw new Exception("Error, VerticalEdge does not have 3 ingredients");
-            if (parameters.Length < 2) throw new Exception("Error, Vertical Edge needs 2 arguments");
-            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[0], ingredients[1], ingredients[2]].center);
-            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[3], ingredients[4], ingredients[5]].center);
-            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube.cubicles[ingredients[6], ingredients[7], ingredients[8]].center);
+            CheckParameterCount(parameters.Length);
+
+            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]].center);
+            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]].center);
+            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]].center);
             if (!ingredient1.inPlace && !ingredient2.inPlace && !ingredient3.inPlace)
             {
-                if (direction)
+                if (_direction)
                 {
                     var solvedC1 = Solver.solvedCube.GetCubicleByFacetColors(ingredient1.facets);
                     if (ingredient2.virtualCenter != solvedC1.center || ingredient1.GetFacet(parameters[0]).color != solvedC1.GetFacet(GetOppositeFacet(parameters[0])).color) return false;
@@ -106,26 +103,10 @@ namespace Rubik01.AI.Recipes
                     ingredient3.SwapFacets(GetOppositeFacet(parameters[1]), GetOppositeFacet(parameters[0]));
                 }
 
-                cube.transformations.Append(code);
+                cube._transformations.Append(_code);
                 return true;
             }
             return false;
-        }
-
-        private int GetOppositeFacet(int facetID)
-        {
-            var oppositeFacetID = -1;
-            switch (facetID)
-            {
-                case 0: oppositeFacetID = 4; break;
-                case 1: oppositeFacetID = 3; break;
-                case 2: oppositeFacetID = 5; break;
-                case 3: oppositeFacetID = 1; break;
-                case 4: oppositeFacetID = 0; break;
-                case 5: oppositeFacetID = 2; break;
-                default: break;
-            }
-            return oppositeFacetID;
         }
     }
 }

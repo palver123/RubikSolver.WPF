@@ -19,7 +19,7 @@ namespace Rubik01.CubeComponents
 
         public Facet(Vector3D center, int color = -1)
         {
-            this.normal = center;
+            normal = center;
             this.color = color;
         }
     }
