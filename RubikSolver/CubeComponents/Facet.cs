@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media.Media3D;
 
-namespace Rubik01.CubeComponents
+namespace RubikSolver.CubeComponents
 {
     internal class Facet
     {

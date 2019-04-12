@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Rubik01.CubeComponents;
+using RubikSolver.CubeComponents;
 
-namespace Rubik01.AI.Recipes
+namespace RubikSolver.AI.Recipes
 {
     internal class BottomCornerOrientation : RecipeWithDirection
     {
@@ -23,8 +23,7 @@ namespace Rubik01.AI.Recipes
             var ingredient1 = cube.GetCubicleByCenter(solvedIngredient1.center);
             var ingredient2 = cube.GetCubicleByCenter(solvedIngredient2.center);
 
-            // _state == 2 means corner positions are OK and every preliminary step is completed
-            if (cube._state == 2 && ingredient1.inPlace && ingredient2.inPlace)
+            if (cube._state == Cube.Completeness.BottomCornersOK && ingredient1.inPlace && ingredient2.inPlace)
             {
                 var oppositeFaceID = GetOppositeFacet(parameters[1]);
                 
@@ -62,8 +61,7 @@ namespace Rubik01.AI.Recipes
             var c1 = cube.GetCubicleByCenter(solvedIngredient1.center);
             var c2 = cube.GetCubicleByCenter(solvedIngredient2.center);
 
-            // _state == 2 means corner positions are OK and every preliminary step is completed
-            if (cube._state == 2 && c1.inPlace && c2.inPlace)
+            if (cube._state == Cube.Completeness.BottomCornersOK && c1.inPlace && c2.inPlace)
             {
                 var oppositeFaceID = GetOppositeFacet(parameters[1]);
                 if (_direction)

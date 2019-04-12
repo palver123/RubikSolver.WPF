@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace Rubik01
+namespace RubikSolver
 {
     /// <summary>
     /// Interaction logic for App.xaml

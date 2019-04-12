@@ -8,8 +8,8 @@
     <ProjectGuid>{5C28E20E-5F94-468F-87F7-4EB2DD23E46B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Rubik01</RootNamespace>
-    <AssemblyName>Rubik01</AssemblyName>
+    <RootNamespace>RubikSolver</RootNamespace>
+    <AssemblyName>RubikSolver</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>

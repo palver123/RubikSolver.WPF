@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Rubik01.CubeComponents;
+using RubikSolver.CubeComponents;
 
-namespace Rubik01.AI.Recipes
+namespace RubikSolver.AI.Recipes
 {
     internal class BottomCornerPos: Recipe
     {
@@ -29,8 +29,7 @@ namespace Rubik01.AI.Recipes
                 cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[21], _ingredients[22], _ingredients[23]].center),
             };
 
-            // _state == 1 means vertical edge positions are OK and every preliminary step is completed
-            if (cube._state ==  1 && !ingredientCubicles[0].inPlace && !ingredientCubicles[5].inPlace)
+            if (cube._state ==  Cube.Completeness.SecondRowComplete && !ingredientCubicles[0].inPlace && !ingredientCubicles[5].inPlace)
             {
                 var solved1 = Solver.solvedCube.GetCubicleByFacetColors(ingredientCubicles[0].facets).center;
                 var solved2 = Solver.solvedCube.GetCubicleByFacetColors(ingredientCubicles[5].facets).center;

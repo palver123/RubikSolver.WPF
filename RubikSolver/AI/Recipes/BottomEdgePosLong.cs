@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Rubik01.CubeComponents;
+using RubikSolver.CubeComponents;
 
-namespace Rubik01.AI.Recipes
+namespace RubikSolver.AI.Recipes
 {
     internal class BottomEdgePosLong : RecipeWithDirection
     {
@@ -21,8 +21,8 @@ namespace Rubik01.AI.Recipes
             var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]].center);
             var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]].center);
             var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]].center);
-            // _state == 3 means bottom corner orientations are OK and every preliminary step is completed
-            if (cube._state == 3 && !ingredient1.inPlace && !ingredient2.inPlace && !ingredient3.inPlace /*&& c1.GetFacet(5).color == 5 && c2.GetFacet(5).color == 5 && c3.GetFacet(5).color == 5*/)
+
+            if (cube._state == Cube.Completeness.BottomEdgePositionsOK && !ingredient1.inPlace && !ingredient2.inPlace && !ingredient3.inPlace /*&& c1.GetFacet(5).color == 5 && c2.GetFacet(5).color == 5 && c3.GetFacet(5).color == 5*/)
             {
                 var solvedC1 = Solver.solvedCube.GetCubicleByFacetColors(ingredient1.facets).center;
                 var solvedC2 = Solver.solvedCube.GetCubicleByFacetColors(ingredient2.facets).center;

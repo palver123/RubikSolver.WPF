@@ -6,10 +6,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using Rubik01.CubeComponents;
-using Rubik01.AI;
+using RubikSolver.AI;
+using RubikSolver.CubeComponents;
 
-namespace Rubik01
+namespace RubikSolver
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

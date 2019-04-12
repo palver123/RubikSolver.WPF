@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Rubik01.CubeComponents;
+using RubikSolver.CubeComponents;
 
-namespace Rubik01.AI.Recipes
+namespace RubikSolver.AI.Recipes
 {
     internal class DoubleEdgeSwap : Recipe
     {
@@ -21,8 +21,8 @@ namespace Rubik01.AI.Recipes
             var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]].center);
             var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]].center);
             var ingredient4 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[9], _ingredients[10], _ingredients[11]].center);
-            // _state == 3 means bottom corner orientations are OK and every preliminary step is completed
-            if (cube._state == 3 && !ingredient1.inPlace && !ingredient2.inPlace && !ingredient3.inPlace && !ingredient4.inPlace)
+
+            if (cube._state == Cube.Completeness.BottomEdgePositionsOK && !ingredient1.inPlace && !ingredient2.inPlace && !ingredient3.inPlace && !ingredient4.inPlace)
             {
                 var solvedC1 = Solver.solvedCube.GetCubicleByFacetColors(ingredient1.facets).center;
                 var solvedC2 = Solver.solvedCube.GetCubicleByFacetColors(ingredient2.facets).center;

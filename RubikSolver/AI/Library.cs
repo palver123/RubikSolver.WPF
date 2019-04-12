@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Rubik01.AI.Recipes;
+using RubikSolver.AI.Recipes;
 
-namespace Rubik01.AI
+namespace RubikSolver.AI
 {
     internal static class Library
     {

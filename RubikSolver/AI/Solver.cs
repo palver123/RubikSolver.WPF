@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Rubik01.CubeComponents;
+using RubikSolver.CubeComponents;
 
-namespace Rubik01.AI
+namespace RubikSolver.AI
 {
     internal static class Solver
     {
@@ -33,15 +33,16 @@ namespace Rubik01.AI
                 };
             while ((!secondRowEdges[0].inPlace || !secondRowEdges[1].inPlace || !secondRowEdges[2].inPlace || !secondRowEdges[3].inPlace))
             {
-                cube._state = 1;
-                if (Library.recipes[69].TryToApply(cube, 1, 4)) counter = 0;
-                if (Library.recipes[70].TryToApply(cube, 1, 4)) counter = 0;
-                if (Library.recipes[71].TryToApply(cube, 4, 3)) counter = 0;
-                if (Library.recipes[72].TryToApply(cube, 4, 3)) counter = 0;
-                if (Library.recipes[73].TryToApply(cube, 3, 0)) counter = 0;
-                if (Library.recipes[74].TryToApply(cube, 3, 0)) counter = 0;
-                if (Library.recipes[75].TryToApply(cube, 0, 1)) counter = 0;
-                if (Library.recipes[76].TryToApply(cube, 0, 1)) counter = 0;
+                cube._state = Cube.Completeness.SecondRowComplete;
+                if (Library.recipes[69].TryToApply(cube, 1, 4) ||
+                    Library.recipes[70].TryToApply(cube, 1, 4) ||
+                    Library.recipes[71].TryToApply(cube, 4, 3) ||
+                    Library.recipes[72].TryToApply(cube, 4, 3) ||
+                    Library.recipes[73].TryToApply(cube, 3, 0) ||
+                    Library.recipes[74].TryToApply(cube, 3, 0) ||
+                    Library.recipes[75].TryToApply(cube, 0, 1) ||
+                    Library.recipes[76].TryToApply(cube, 0, 1))
+                    counter = 0;
 
                 secondRowEdges = new[] {
                     cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 0].center),
@@ -111,7 +112,7 @@ namespace Rubik01.AI
                 };
                 counter++;
             }
-            cube._state = 2;
+            cube._state = Cube.Completeness.BottomCornersOK;
 
             #endregion
 
@@ -150,7 +151,7 @@ namespace Rubik01.AI
                 if (!bottomCornerSolved[0] || !bottomCornerSolved[1] || !bottomCornerSolved[2] || !bottomCornerSolved[3]) Library.recipes[35].Apply(cube, 1, 4);
                 counter++;
             }
-            cube._state = 3;
+            cube._state = Cube.Completeness.BottomEdgePositionsOK;
 
             #endregion
 
@@ -182,7 +183,7 @@ namespace Rubik01.AI
             Library.recipes[58].TryToApply(cube, 0, 4, 3, 4, 0, 3);
             Library.recipes[59].TryToApply(cube, 0, 4, 3, 4, 0, 3);
             CheckPositions(cube);
-            cube._state = 4;
+            cube._state = Cube.Completeness.Solved;
 
             #endregion
 
@@ -223,8 +224,11 @@ namespace Rubik01.AI
             foreach (var c1 in solvedCube._cubicles)
             {
                 var c2 = cube.GetCubicleByCenter(c1.virtualCenter);
-                for (var i = 0; i < 6; i++) if ((c1.facets[i].normal == c2.facets[i].normal) && (c1.facets[i].color != c2.facets[i].color)) return false;
+                for (var i = 0; i < 6; i++)
+                    if (c1.facets[i].normal == c2.facets[i].normal && c1.facets[i].color != c2.facets[i].color)
+                        return false;
             }
+
             return true;
         }
     }

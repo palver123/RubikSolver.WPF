@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Rubik01.CubeComponents;
 using System.Windows.Media.Media3D;
+using RubikSolver.CubeComponents;
 
-namespace Rubik01.AI.Recipes
+namespace RubikSolver.AI.Recipes
 {
     internal class RotateBottom : IRecipe
     {
