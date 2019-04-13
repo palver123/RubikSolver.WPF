@@ -201,30 +201,30 @@ namespace RubikSolver
 
         private void mainViewport_MouseMove(object sender, MouseEventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
-            {
-                var newPosition = Mouse.GetPosition(mainViewport);
-                var cursorDisplacement = Mouse.GetPosition(mainViewport) - cursorPosition;
-                var angleZ = (float)cursorDisplacement.X / 100;
-                var angleY = -(float)cursorDisplacement.Y / 125;
-                var axis =  Vector3D.CrossProduct(new Vector3D(0, 0, 1), ((PerspectiveCamera)mainViewport.Camera).LookDirection);
-                axis.Normalize();
-                var rotationY = new Matrix3D(Math.Cos(angleY) + axis.X * axis.X * (1 - Math.Cos(angleY)), axis.X * axis.Y *(1 - Math.Cos(angleY)) - axis.Z * Math.Sin(angleY), axis.X * axis.Z *(1 - Math.Cos(angleY)) + axis.Y * Math.Sin(angleY), 0,
-                                                  axis.X * axis.Y *(1 - Math.Cos(angleY)) + axis.Z * Math.Sin(angleY), Math.Cos(angleY) + axis.Y * axis.Y * (1 - Math.Cos(angleY)), axis.Y * axis.Z * (1 - Math.Cos(angleY)) - axis.X * Math.Sin(angleY), 0,
-                                                  axis.X * axis.Z *(1 - Math.Cos(angleY)) - axis.Y * Math.Sin(angleY), axis.Y * axis.Z *(1 - Math.Cos(angleY)) + axis.X * Math.Sin(angleY), Math.Cos(angleY) + axis.Z * axis.Z * Math.Sin(angleY), 0,
-                                                  0, 0, 0, 1);
-                var rotationZ = new Matrix3D(Math.Cos(angleZ), -Math.Sin(angleZ), 0, 0,
-                                 Math.Sin(angleZ), Math.Cos(angleZ), 0, 0,
-                                 0, 0, 1, 0,
-                                 0, 0, 0, 1);
-                ((PerspectiveCamera)mainViewport.Camera).Position = Point3D.Multiply(((PerspectiveCamera)mainViewport.Camera).Position, rotationY*rotationZ);
-                ((PerspectiveCamera)mainViewport.Camera).LookDirection = new Point3D(0, 0, 0) - ((PerspectiveCamera)mainViewport.Camera).Position;
-                var model = new ModelVisual3D();
-                var light = new DirectionalLight {Direction = ((PerspectiveCamera) mainViewport.Camera).LookDirection};
-                model.Content = light;
-                mainViewport.Children[0] = model;
-                cursorPosition = newPosition;
-            }
+            if (e.LeftButton != MouseButtonState.Pressed)
+                return;
+
+            var newPosition = Mouse.GetPosition(mainViewport);
+            var cursorDisplacement = Mouse.GetPosition(mainViewport) - cursorPosition;
+            var angleZ = (float)cursorDisplacement.X / 100;
+            var angleY = -(float)cursorDisplacement.Y / 125;
+            var axis =  Vector3D.CrossProduct(new Vector3D(0, 0, 1), ((PerspectiveCamera)mainViewport.Camera).LookDirection);
+            axis.Normalize();
+            var rotationY = new Matrix3D(Math.Cos(angleY) + axis.X * axis.X * (1 - Math.Cos(angleY)), axis.X * axis.Y *(1 - Math.Cos(angleY)) - axis.Z * Math.Sin(angleY), axis.X * axis.Z *(1 - Math.Cos(angleY)) + axis.Y * Math.Sin(angleY), 0,
+                axis.X * axis.Y *(1 - Math.Cos(angleY)) + axis.Z * Math.Sin(angleY), Math.Cos(angleY) + axis.Y * axis.Y * (1 - Math.Cos(angleY)), axis.Y * axis.Z * (1 - Math.Cos(angleY)) - axis.X * Math.Sin(angleY), 0,
+                axis.X * axis.Z *(1 - Math.Cos(angleY)) - axis.Y * Math.Sin(angleY), axis.Y * axis.Z *(1 - Math.Cos(angleY)) + axis.X * Math.Sin(angleY), Math.Cos(angleY) + axis.Z * axis.Z * Math.Sin(angleY), 0,
+                0, 0, 0, 1);
+            var rotationZ = new Matrix3D(Math.Cos(angleZ), -Math.Sin(angleZ), 0, 0,
+                Math.Sin(angleZ), Math.Cos(angleZ), 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1);
+            ((PerspectiveCamera)mainViewport.Camera).Position = Point3D.Multiply(((PerspectiveCamera)mainViewport.Camera).Position, rotationY*rotationZ);
+            ((PerspectiveCamera)mainViewport.Camera).LookDirection = new Point3D(0, 0, 0) - ((PerspectiveCamera)mainViewport.Camera).Position;
+            var model = new ModelVisual3D();
+            var light = new DirectionalLight {Direction = ((PerspectiveCamera) mainViewport.Camera).LookDirection};
+            model.Content = light;
+            mainViewport.Children[0] = model;
+            cursorPosition = newPosition;
         }
 
         private void mainViewport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
