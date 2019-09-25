@@ -31,7 +31,7 @@ namespace RubikSolver.AI
                     cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 0].center),
                     cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 2].center)
                 };
-            while ((!secondRowEdges[0].inPlace || !secondRowEdges[1].inPlace || !secondRowEdges[2].inPlace || !secondRowEdges[3].inPlace))
+            while (!secondRowEdges[0].inPlace || !secondRowEdges[1].inPlace || !secondRowEdges[2].inPlace || !secondRowEdges[3].inPlace)
             {
                 cube._state = Cube.Completeness.SecondRowComplete;
                 if (Library.recipes[69].TryToApply(cube, 1, 4) ||
@@ -143,10 +143,10 @@ namespace RubikSolver.AI
                 };
                 for (var j = 0; j < 6; j++)
                 {
-                    if ((bottomCorners[0].facets[j].normal == solvedCube._cubicles[0, 0, 0].facets[j].normal) && (bottomCorners[0].facets[j].color != solvedCube._cubicles[0, 0, 0].facets[j].color)) bottomCornerSolved[0] = false;
-                    if ((bottomCorners[1].facets[j].normal == solvedCube._cubicles[0, 0, 2].facets[j].normal) && (bottomCorners[1].facets[j].color != solvedCube._cubicles[0, 0, 2].facets[j].color)) bottomCornerSolved[1] = false;
-                    if ((bottomCorners[2].facets[j].normal == solvedCube._cubicles[0, 2, 0].facets[j].normal) && (bottomCorners[2].facets[j].color != solvedCube._cubicles[0, 2, 0].facets[j].color)) bottomCornerSolved[2] = false;
-                    if ((bottomCorners[3].facets[j].normal == solvedCube._cubicles[0, 2, 2].facets[j].normal) && (bottomCorners[3].facets[j].color != solvedCube._cubicles[0, 2, 2].facets[j].color)) bottomCornerSolved[3] = false;
+                    if (bottomCorners[0].facets[j].normal == solvedCube._cubicles[0, 0, 0].facets[j].normal && bottomCorners[0].facets[j].color != solvedCube._cubicles[0, 0, 0].facets[j].color) bottomCornerSolved[0] = false;
+                    if (bottomCorners[1].facets[j].normal == solvedCube._cubicles[0, 0, 2].facets[j].normal && bottomCorners[1].facets[j].color != solvedCube._cubicles[0, 0, 2].facets[j].color) bottomCornerSolved[1] = false;
+                    if (bottomCorners[2].facets[j].normal == solvedCube._cubicles[0, 2, 0].facets[j].normal && bottomCorners[2].facets[j].color != solvedCube._cubicles[0, 2, 0].facets[j].color) bottomCornerSolved[2] = false;
+                    if (bottomCorners[3].facets[j].normal == solvedCube._cubicles[0, 2, 2].facets[j].normal && bottomCorners[3].facets[j].color != solvedCube._cubicles[0, 2, 2].facets[j].color) bottomCornerSolved[3] = false;
                 }
                 if (!bottomCornerSolved[0] || !bottomCornerSolved[1] || !bottomCornerSolved[2] || !bottomCornerSolved[3]) Library.recipes[35].Apply(cube, 1, 4);
                 counter++;

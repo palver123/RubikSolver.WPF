@@ -97,7 +97,7 @@ namespace RubikSolver
                                 if (contains) found = true;
                             }
                             for (var m = 0; m < 6; m++)
-                                if (found || (c1.facets[m].normal == c2.facets[m].normal) && (c1.facets[m].color != c2.facets[m].color)) return false;
+                                if (found || c1.facets[m].normal == c2.facets[m].normal && c1.facets[m].color != c2.facets[m].color) return false;
                         }
                         else
                         {

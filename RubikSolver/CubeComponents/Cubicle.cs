@@ -10,6 +10,11 @@ namespace RubikSolver.CubeComponents
 {
     internal class Cubicle
     {
+        /// <summary>
+        /// Size of a cubicle is 10 units with 1 unit padding between them
+        /// </summary>
+        internal const int SIZE = 10;
+
         private readonly Point3D[] vertices;
         public Vector3D center;
         public Vector3D virtualCenter;
@@ -77,7 +82,7 @@ namespace RubikSolver.CubeComponents
             return Vector3D.CrossProduct(v0, v1);
         }
 
-        public void ReDraw(int size, int i, int j, int k)
+        public void ReDraw(int i, int j, int k)
         {
             var modelCube = new Model3DGroup();
             var color = Color.FromRgb(10, 10, 10);

@@ -37,11 +37,6 @@ namespace RubikSolver.CubeComponents
         }
 
         /// <summary>
-        /// Size of a cubicle is 10 units with 1 unit padding between them
-        /// </summary>
-        private const int SIZE = 10;
-
-        /// <summary>
         /// This is for the animation. 0 if the cube should stand still. A face rotation consists of 9 * 10 degree rotations - this sums up to 90 degrees -
         /// </summary>
         public int _turnState;
@@ -70,7 +65,7 @@ namespace RubikSolver.CubeComponents
                 for (var j = 0; j < 3; j++)
                     for (var k = 0; k < 3; k++)
                     {
-                        _cubicles[i, j, k] = new Cubicle(SIZE, new Vector3D((j - 3 / 2) * SIZE * 1.1, (k - 3 / 2) * SIZE * 1.1, (i - 3 / 2) * SIZE * 1.1), i, j, k);
+                        _cubicles[i, j, k] = new Cubicle(Cubicle.SIZE, new Vector3D((j - 3 / 2) * Cubicle.SIZE * 1.1, (k - 3 / 2) * Cubicle.SIZE * 1.1, (i - 3 / 2) * Cubicle.SIZE * 1.1), i, j, k);
                     }
             _transformations = new StringBuilder();
             _currentTransformIndex = -1;
@@ -85,40 +80,40 @@ namespace RubikSolver.CubeComponents
             switch (_transformations[_currentTransformIndex])
             {
                 case 'B':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.X < -SIZE / 2.0) cubicle.Rotate(new Vector3D(-SIZE * 1.1, 0, 0), new Vector3D(-1, 0, 0), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.X < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(-Cubicle.SIZE * 1.1, 0, 0), new Vector3D(-1, 0, 0), !isInverse);
                     break;
                 case 'b':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.X < -SIZE / 2.0) cubicle.Rotate(new Vector3D(-SIZE * 1.1, 0, 0), new Vector3D(-1, 0, 0), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.X < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(-Cubicle.SIZE * 1.1, 0, 0), new Vector3D(-1, 0, 0), isInverse);
                     break;
                 case 'L':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Y < -SIZE / 2.0) cubicle.Rotate(new Vector3D(0, -SIZE * 1.1, 0), new Vector3D(0, -1, 0), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.Y < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, -Cubicle.SIZE * 1.1, 0), new Vector3D(0, -1, 0), !isInverse);
                     break;
                 case 'l':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Y < -SIZE / 2.0) cubicle.Rotate(new Vector3D(0, -SIZE * 1.1, 0), new Vector3D(0, -1, 0), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.Y < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, -Cubicle.SIZE * 1.1, 0), new Vector3D(0, -1, 0), isInverse);
                     break;
                 case 'U':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Z > SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, SIZE * 1.1), new Vector3D(0, 0, 1), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.Z > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, Cubicle.SIZE * 1.1), new Vector3D(0, 0, 1), !isInverse);
                     break;
                 case 'u':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Z > SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, SIZE * 1.1), new Vector3D(0, 0, 1), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.Z > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, Cubicle.SIZE * 1.1), new Vector3D(0, 0, 1), isInverse);
                     break;
                 case 'R':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Y > SIZE / 2.0) cubicle.Rotate(new Vector3D(0, SIZE * 1.1, 0), new Vector3D(0, 1, 0), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.Y > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, Cubicle.SIZE * 1.1, 0), new Vector3D(0, 1, 0), !isInverse);
                     break;
                 case 'r':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Y > SIZE / 2.0) cubicle.Rotate(new Vector3D(0, SIZE * 1.1, 0), new Vector3D(0, 1, 0), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.Y > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, Cubicle.SIZE * 1.1, 0), new Vector3D(0, 1, 0), isInverse);
                     break;
                 case 'F':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.X > SIZE / 2.0) cubicle.Rotate(new Vector3D(SIZE * 1.1, 0, 0), new Vector3D(1, 0, 0), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.X > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(Cubicle.SIZE * 1.1, 0, 0), new Vector3D(1, 0, 0), !isInverse);
                     break;
                 case 'f':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.X > SIZE / 2.0) cubicle.Rotate(new Vector3D(SIZE * 1.1, 0, 0), new Vector3D(1, 0, 0), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.X > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(Cubicle.SIZE * 1.1, 0, 0), new Vector3D(1, 0, 0), isInverse);
                     break;
                 case 'D':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Z < -SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, -SIZE * 1.1), new Vector3D(0, 0, -1), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.Z < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, -Cubicle.SIZE * 1.1), new Vector3D(0, 0, -1), !isInverse);
                     break;
                 case 'd':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Z < -SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, -SIZE * 1.1), new Vector3D(0, 0, -1), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle.center.Z < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, -Cubicle.SIZE * 1.1), new Vector3D(0, 0, -1), isInverse);
                     break;
                 default:
                     System.Windows.MessageBox.Show("Cannot read recipe!", "Error!");
@@ -145,7 +140,7 @@ namespace RubikSolver.CubeComponents
                     for (var k = 0; k < 3; k++)
                     {
                         // size of a cubicle is 10 units with 1 unit padding between them
-                        _cubicles[i, j, k].ReDraw(10, i, j, k);
+                        _cubicles[i, j, k].ReDraw(i, j, k);
                     }
         }
 
