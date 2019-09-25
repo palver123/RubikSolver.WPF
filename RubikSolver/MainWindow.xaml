@@ -248,12 +248,12 @@
         </Grid>
         <Border Grid.Column="1" 
                 MouseMove="mainViewport_MouseMove"
-                Background="Transparent">
-            <Viewport3D Name="mainViewport"
-                        Width="Auto"
-                        MouseLeftButtonDown="mainViewport_MouseLeftButtonDown"
-                        MouseEnter="mainViewport_MouseEnter"
-                        MouseLeave="mainViewport_MouseLeave">
+                Background="Transparent"
+                MouseLeftButtonDown="mainViewport_MouseLeftButtonDown"
+                MouseLeftButtonUp="mainViewport_OnMouseLeftButtonUp"
+                MouseEnter="mainViewport_MouseEnter"
+                MouseLeave="mainViewport_MouseLeave">
+            <Viewport3D Name="mainViewport" Width="Auto">
                 <Viewport3D.Camera>
                     <PerspectiveCamera Position="90,50,50" 
                                        LookDirection="-90,-50,-50 " 

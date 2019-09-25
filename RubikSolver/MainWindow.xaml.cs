@@ -48,6 +48,8 @@ namespace RubikSolver
         /// </summary>
         private Point cursorPosition;
 
+        private bool _orbittingCamera;
+
         public MainWindow()
         {
             _cubeColors = new[]
@@ -201,7 +203,7 @@ namespace RubikSolver
 
         private void mainViewport_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton != MouseButtonState.Pressed)
+            if (!_orbittingCamera)
                 return;
 
             var newPosition = Mouse.GetPosition(mainViewport);
@@ -229,11 +231,19 @@ namespace RubikSolver
 
         private void mainViewport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            _orbittingCamera = true;
             cursorPosition = Mouse.GetPosition(mainViewport);
+        }
+
+        private void mainViewport_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _orbittingCamera = false;
         }
 
         private void mainViewport_MouseEnter(object sender, MouseEventArgs e)
         {
+            if (e.LeftButton == MouseButtonState.Released)
+                _orbittingCamera = false;
             Cursor = Cursors.Hand;
         }
 
