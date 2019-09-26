@@ -1,6 +1,8 @@
 # RubikSolver.WPF
 An educational WPF application to help the average Joe learn solving the Rubik's cube.
 
+![alt=Screenshot](https://github.com/palver123/RubikSolver.WPF/blob/master/screenshot.png)
+
 # How to build
 
 I currently use Visual Studio 2017, but anything newer than VS 2008 should be able to build it.
