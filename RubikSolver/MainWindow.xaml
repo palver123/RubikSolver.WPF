@@ -255,14 +255,15 @@
                 MouseLeave="mainViewport_MouseLeave">
             <Viewport3D Name="mainViewport" Width="Auto">
                 <Viewport3D.Camera>
-                    <PerspectiveCamera Position="90,50,50" 
-                                       LookDirection="-90,-50,-50 " 
+                    <PerspectiveCamera x:Name="camera" Position="-90,-50,-50" 
+                                       LookDirection="2,1,1 " 
                                        UpDirection="0,0,1" />
                 </Viewport3D.Camera>
-                <ModelVisual3D>
+                <ModelVisual3D x:Name="model">
                     <ModelVisual3D.Content>
                         <Model3DGroup>
-                            <DirectionalLight Color="White" 
+                            <DirectionalLight x:Name="light"
+                                              Color="White" 
                                               Direction="-9,-5,-5" />
                         </Model3DGroup>
                     </ModelVisual3D.Content>

@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using RubikSolver.AI;
 using RubikSolver.CubeComponents;
+using RubikSolver.Utils;
 
 namespace RubikSolver
 {
@@ -36,7 +37,7 @@ namespace RubikSolver
         /// <summary>
         /// The currently selected color 
         /// </summary>
-        private int selectedColorID;
+        private int _selectedColorID;
 
         /// <summary>
         /// The Rubik's Cube 
@@ -46,7 +47,7 @@ namespace RubikSolver
         /// <summary>
         /// The last known position of the mouse cursor in the viewport 
         /// </summary>
-        private Point cursorPosition;
+        private Point _lastMousePos;
 
         private bool _orbittingCamera;
 
@@ -64,6 +65,8 @@ namespace RubikSolver
             InitializeComponent();
             Cubicle.viewport = mainViewport;
 
+            light.Direction = camera.LookDirection;
+
             ResetCube();
             Solver.Initialize();
         }
@@ -72,7 +75,7 @@ namespace RubikSolver
         {
             var foundCubicles = new List<Cubicle>();
             for (var i = 0; i < 3; i++)
-			{
+            {
                 for (var j = 0; j < 3; j++)
                 {
                     for (var k = 0; k < 3; k++)
@@ -91,35 +94,47 @@ namespace RubikSolver
                                     var contains2 = false;
                                     for (var n = 0; n < 6; n++)
                                     {
-                                        if (cubicle.facets[n].color == c2.facets[m].color) contains1 = true;
-                                        if (c2.facets[n].color == cubicle.facets[m].color) contains2 = true;
+                                        if (cubicle.facets[n].color == c2.facets[m].color)
+                                            contains1 = true;
+                                        if (c2.facets[n].color == cubicle.facets[m].color)
+                                            contains2 = true;
                                     }
-                                    if (!contains1 || !contains2) contains = false;
+
+                                    if (!contains1 || !contains2)
+                                        contains = false;
                                 }
-                                if (contains) found = true;
+
+                                if (contains)
+                                    found = true;
                             }
+
                             for (var m = 0; m < 6; m++)
-                                if (found || c1.facets[m].normal == c2.facets[m].normal && c1.facets[m].color != c2.facets[m].color) return false;
+                                if (found || c1.facets[m].normal == c2.facets[m].normal &&
+                                    c1.facets[m].color != c2.facets[m].color)
+                                    return false;
                         }
                         else
                         {
                             var cubicle = cube._cubicles[i, j, k];
-                            if (Solver.solvedCube.GetCubicleByFacetColors(cubicle.facets) == null) return false;
+                            if (Solver.solvedCube.GetCubicleByFacetColors(cubicle.facets) == null)
+                                return false;
                             foundCubicles.Add(cubicle);
                         }
                     }
                 }
-			}
+            }
+
             return true;
         }
 
         private void colorSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedColorID = colorSelector.SelectedIndex;
-            colorPreview.Background = _cubeColors[selectedColorID];
-            textBoxRed.Text = _cubeColors[selectedColorID].Color.R.ToString();
-            textBoxGreen.Text = _cubeColors[selectedColorID].Color.G.ToString();
-            textBoxBlue.Text = _cubeColors[selectedColorID].Color.B.ToString();
+            _selectedColorID = colorSelector.SelectedIndex;
+            var selectedColor = _cubeColors[_selectedColorID];
+            colorPreview.Fill = selectedColor;
+            textBoxRed.Text = selectedColor.Color.R.ToString();
+            textBoxGreen.Text = selectedColor.Color.G.ToString();
+            textBoxBlue.Text = selectedColor.Color.B.ToString();
         }
 
         #region Validating color inputs
@@ -165,7 +180,7 @@ namespace RubikSolver
                 textBox.Text = "255";
 
             var b = (byte)Math.Min(255, Math.Max(0, value));
-            var selectedColor = _cubeColors[selectedColorID].Color;
+            var selectedColor = _cubeColors[_selectedColorID].Color;
             Color newColor;
             switch (channel)
             {
@@ -181,8 +196,8 @@ namespace RubikSolver
                 default:
                     throw new ArgumentOutOfRangeException(nameof(channel), channel, null);
             }
-            _cubeColors[selectedColorID].Color = newColor;
-            colorPreview.Background = _cubeColors[selectedColorID];
+            _cubeColors[_selectedColorID].Color = newColor;
+            colorPreview.Background = _cubeColors[_selectedColorID];
         }
 
         private void textBoxColorControl_KeyDown(object sender, KeyEventArgs e)
@@ -206,33 +221,22 @@ namespace RubikSolver
             if (!_orbittingCamera)
                 return;
 
-            var newPosition = Mouse.GetPosition(mainViewport);
-            var cursorDisplacement = Mouse.GetPosition(mainViewport) - cursorPosition;
-            var angleZ = (float)cursorDisplacement.X / 100;
-            var angleY = -(float)cursorDisplacement.Y / 125;
-            var axis =  Vector3D.CrossProduct(new Vector3D(0, 0, 1), ((PerspectiveCamera)mainViewport.Camera).LookDirection);
-            axis.Normalize();
-            var rotationY = new Matrix3D(Math.Cos(angleY) + axis.X * axis.X * (1 - Math.Cos(angleY)), axis.X * axis.Y *(1 - Math.Cos(angleY)) - axis.Z * Math.Sin(angleY), axis.X * axis.Z *(1 - Math.Cos(angleY)) + axis.Y * Math.Sin(angleY), 0,
-                axis.X * axis.Y *(1 - Math.Cos(angleY)) + axis.Z * Math.Sin(angleY), Math.Cos(angleY) + axis.Y * axis.Y * (1 - Math.Cos(angleY)), axis.Y * axis.Z * (1 - Math.Cos(angleY)) - axis.X * Math.Sin(angleY), 0,
-                axis.X * axis.Z *(1 - Math.Cos(angleY)) - axis.Y * Math.Sin(angleY), axis.Y * axis.Z *(1 - Math.Cos(angleY)) + axis.X * Math.Sin(angleY), Math.Cos(angleY) + axis.Z * axis.Z * Math.Sin(angleY), 0,
-                0, 0, 0, 1);
-            var rotationZ = new Matrix3D(Math.Cos(angleZ), -Math.Sin(angleZ), 0, 0,
-                Math.Sin(angleZ), Math.Cos(angleZ), 0, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 1);
-            ((PerspectiveCamera)mainViewport.Camera).Position = Point3D.Multiply(((PerspectiveCamera)mainViewport.Camera).Position, rotationY*rotationZ);
-            ((PerspectiveCamera)mainViewport.Camera).LookDirection = new Point3D(0, 0, 0) - ((PerspectiveCamera)mainViewport.Camera).Position;
-            var model = new ModelVisual3D();
-            var light = new DirectionalLight {Direction = ((PerspectiveCamera) mainViewport.Camera).LookDirection};
-            model.Content = light;
-            mainViewport.Children[0] = model;
-            cursorPosition = newPosition;
+            var currentMousePos = Mouse.GetPosition(mainViewport);
+            var delta = currentMousePos - _lastMousePos;
+            var yaw = delta.X / 100;
+            var pitch = delta.Y / 125;
+            var rotation = camera.CreatePitchYawRotation(pitch, yaw);
+
+            camera.Position = rotation.Transform(camera.Position);
+            camera.LookDirection = new Point3D(0, 0, 0) - camera.Position;
+            light.Direction = camera.LookDirection;
+            _lastMousePos = currentMousePos;
         }
 
         private void mainViewport_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _orbittingCamera = true;
-            cursorPosition = Mouse.GetPosition(mainViewport);
+            _lastMousePos = Mouse.GetPosition(mainViewport);
         }
 
         private void mainViewport_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -257,7 +261,7 @@ namespace RubikSolver
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var btn = (Button) sender;
-            btn.Background = _cubeColors[selectedColorID];
+            btn.Background = _cubeColors[_selectedColorID];
             int cubicleID;
             var faceID = cubicleID = -1;
             for (var i = 0; i < cubeNetParent.Children.Count; i++)
@@ -266,7 +270,7 @@ namespace RubikSolver
             for (var i = 0; i < ((Grid) cubeNetParent.Children[faceID]).Children.Count; i++)
                 if (((Grid) cubeNetParent.Children[faceID]).Children[i].Equals(btn))
                     cubicleID = i;
-            cubicleFaceColors[faceID, cubicleID] = selectedColorID;
+            cubicleFaceColors[faceID, cubicleID] = _selectedColorID;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -347,16 +351,24 @@ namespace RubikSolver
         private void confirmButton_Click(object sender, RoutedEventArgs e)
         {
             cube = new Cube();
-            if (IsCubeNetValid())
+            if (!IsCubeNetValid())
             {
-                if (Solver.Solve(cube))
-                    if (cube._transformations.Length == 0) MessageBox.Show("The cube is already solved.");
-                    else MessageBox.Show("I've found a solution of " + cube._transformations.Length + " step (quarter turn metric)");
-                else MessageBox.Show("Sorry, I can't solve this cube. Please check if you entered facet colors correctly!\nAlso don't forget that the top row has to be completed!", "Oops");
-                cube.ReDraw();
-                FocusManager.SetFocusedElement(GetWindow(mainViewport), GetWindow(mainViewport));
+                MessageBox.Show("The given coloring is illegal. Please check if you entered facet colors correctly!\nAlso don't forget that the top row has to be completed!", "Error!");
+                return;
             }
-            else MessageBox.Show("The given coloring is illegal. Please check if you entered facet colors correctly!\nAlso don't forget that the top row has to be completed!", "Error!");
+
+            if (Solver.Solve(cube))
+            {
+                if (cube._transformations.Length == 0)
+                    MessageBox.Show("The cube is already solved.");
+                else
+                    MessageBox.Show("I've found a solution of " + cube._transformations.Length + " steps (quarter turn metric)");
+            }
+            else
+                MessageBox.Show("Sorry, I can't solve this cube. Please check if you entered facet colors correctly!\nAlso don't forget that the top row has to be completed!", "Oops");
+
+            cube.ReDraw();
+            FocusManager.SetFocusedElement(GetWindow(mainViewport), GetWindow(mainViewport));
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
