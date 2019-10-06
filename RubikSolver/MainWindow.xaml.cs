@@ -27,7 +27,7 @@ namespace RubikSolver
         /// <summary>
         /// Array to store the color of the cubicles 
         /// </summary>
-        public static int[,] cubicleFaceColors;
+        public static int[,] _cubicleFaceColors;
 
         /// <summary>
         /// The colors of the 6 faces of the cube 
@@ -42,7 +42,7 @@ namespace RubikSolver
         /// <summary>
         /// The Rubik's Cube 
         /// </summary>
-        private Cube cube;
+        private Cube _cube;
 
         /// <summary>
         /// The last known position of the mouse cursor in the viewport 
@@ -63,10 +63,8 @@ namespace RubikSolver
                 new SolidColorBrush(Color.FromRgb(250, 209, 19))
             };
             InitializeComponent();
-            Cubicle.viewport = mainViewport;
 
             light.Direction = camera.LookDirection;
-
             ResetCube();
             Solver.Initialize();
         }
@@ -83,7 +81,7 @@ namespace RubikSolver
                         if (i == 2)
                         {
                             var c1 = Solver.solvedCube._cubicles[i, j, k];
-                            var c2 = cube.GetCubicleByCenter(c1.center);
+                            var c2 = _cube.GetCubicleByCenter(c1._center);
                             var found = false;
                             foreach (var cubicle in foundCubicles)
                             {
@@ -115,7 +113,7 @@ namespace RubikSolver
                         }
                         else
                         {
-                            var cubicle = cube._cubicles[i, j, k];
+                            var cubicle = _cube._cubicles[i, j, k];
                             if (Solver.solvedCube.GetCubicleByFacetColors(cubicle.facets) == null)
                                 return false;
                             foundCubicles.Add(cubicle);
@@ -197,7 +195,7 @@ namespace RubikSolver
                     throw new ArgumentOutOfRangeException(nameof(channel), channel, null);
             }
             _cubeColors[_selectedColorID].Color = newColor;
-            colorPreview.Background = _cubeColors[_selectedColorID];
+            colorPreview.Fill = _cubeColors[_selectedColorID];
         }
 
         private void textBoxColorControl_KeyDown(object sender, KeyEventArgs e)
@@ -270,7 +268,7 @@ namespace RubikSolver
             for (var i = 0; i < ((Grid) cubeNetParent.Children[faceID]).Children.Count; i++)
                 if (((Grid) cubeNetParent.Children[faceID]).Children[i].Equals(btn))
                     cubicleID = i;
-            cubicleFaceColors[faceID, cubicleID] = _selectedColorID;
+            _cubicleFaceColors[faceID, cubicleID] = _selectedColorID;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -278,57 +276,57 @@ namespace RubikSolver
             switch (e.Key)
             {
                 case Key.A:
-                    cube._transformations.Append('B');
+                    _cube._transformations.Append('B');
                     break;
                 case Key.S:
-                    cube._transformations.Append('b');
+                    _cube._transformations.Append('b');
                     break;
                 case Key.D:
-                    cube._transformations.Append('L');
+                    _cube._transformations.Append('L');
                     break;
                 case Key.F:
-                    cube._transformations.Append('l');
+                    _cube._transformations.Append('l');
                     break;
                 case Key.G:
-                    cube._transformations.Append('U');
+                    _cube._transformations.Append('U');
                     break;
                 case Key.H:
-                    cube._transformations.Append('u');
+                    _cube._transformations.Append('u');
                     break;
                 case Key.J:
-                    cube._transformations.Append('R');
+                    _cube._transformations.Append('R');
                     break;
                 case Key.K:
-                    cube._transformations.Append('r');
+                    _cube._transformations.Append('r');
                     break;
                 case Key.Y:
-                    cube._transformations.Append('F');
+                    _cube._transformations.Append('F');
                     break;
                 case Key.X:
-                    cube._transformations.Append('f');
+                    _cube._transformations.Append('f');
                     break;
                 case Key.C:
-                    cube._transformations.Append('D');
+                    _cube._transformations.Append('D');
                     break;
                 case Key.V:
-                    cube._transformations.Append('d');
+                    _cube._transformations.Append('d');
                     break;
                 case Key.Right:
-                    if (cube._turnState == 0 && cube._currentTransformIndex < cube._transformations.Length - 1)
+                    if (_cube._turnState == 0 && _cube._currentTransformIndex < _cube._transformations.Length - 1)
                     {
-                        cube._turnState = 9;
-                        cube._currentTransformIndex++;
-                        if (cube._transformations.Length > 1)
-                            progressBar.Value = cube._currentTransformIndex / ((float) cube._transformations.Length - 1) * progressBar.Maximum;
+                        _cube._turnState = 9;
+                        _cube._currentTransformIndex++;
+                        if (_cube._transformations.Length > 1)
+                            progressBar.Value = _cube._currentTransformIndex / ((float) _cube._transformations.Length - 1) * progressBar.Maximum;
                     }
 
                     break;
                 case Key.Left:
-                    if (cube._turnState == 0 && cube._currentTransformIndex >= 0)
+                    if (_cube._turnState == 0 && _cube._currentTransformIndex >= 0)
                     {
-                        cube._turnState = -9;
-                        if (cube._transformations.Length > 1)
-                            progressBar.Value = cube._currentTransformIndex / ((float) cube._transformations.Length - 1) * progressBar.Maximum;
+                        _cube._turnState = -9;
+                        if (_cube._transformations.Length > 1)
+                            progressBar.Value = _cube._currentTransformIndex / ((float) _cube._transformations.Length - 1) * progressBar.Maximum;
                     }
 
                     break;
@@ -345,29 +343,30 @@ namespace RubikSolver
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            if (cube._turnState != 0 && cube._currentTransformIndex >= 0 && cube._currentTransformIndex < cube._transformations.Length) cube.AnimateFaceRotation();
+            if (_cube._turnState != 0 && _cube._currentTransformIndex >= 0 && _cube._currentTransformIndex < _cube._transformations.Length)
+                _cube.AnimateFaceRotation(cubeGeometry.Children);
         }
 
         private void confirmButton_Click(object sender, RoutedEventArgs e)
         {
-            cube = new Cube();
+            _cube = new Cube();
             if (!IsCubeNetValid())
             {
                 MessageBox.Show("The given coloring is illegal. Please check if you entered facet colors correctly!\nAlso don't forget that the top row has to be completed!", "Error!");
                 return;
             }
 
-            if (Solver.Solve(cube))
+            if (Solver.Solve(_cube))
             {
-                if (cube._transformations.Length == 0)
+                if (_cube._transformations.Length == 0)
                     MessageBox.Show("The cube is already solved.");
                 else
-                    MessageBox.Show("I've found a solution of " + cube._transformations.Length + " steps (quarter turn metric)");
+                    MessageBox.Show("I've found a solution of " + _cube._transformations.Length + " steps (quarter turn metric)");
             }
             else
                 MessageBox.Show("Sorry, I can't solve this cube. Please check if you entered facet colors correctly!\nAlso don't forget that the top row has to be completed!", "Oops");
 
-            cube.ReDraw();
+            _cube.Redraw(cubeGeometry.Children);
             FocusManager.SetFocusedElement(GetWindow(mainViewport), GetWindow(mainViewport));
         }
 
@@ -378,7 +377,7 @@ namespace RubikSolver
 
         private void ResetCube()
         {
-            cubicleFaceColors = new[,]
+            _cubicleFaceColors = new[,]
             {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -389,17 +388,17 @@ namespace RubikSolver
             };
             for (var i = 0; i < 9; i++)
             {
-                ((Button)cubeNetBack.Children[i]).Background = _cubeColors[cubicleFaceColors[0, i]];
-                ((Button)cubeNetLeft.Children[i]).Background = _cubeColors[cubicleFaceColors[1, i]];
-                ((Button)cubeNetTop.Children[i]).Background = _cubeColors[cubicleFaceColors[2, i]];
-                ((Button)cubeNetRight.Children[i]).Background = _cubeColors[cubicleFaceColors[3, i]];
-                ((Button)cubeNetFront.Children[i]).Background = _cubeColors[cubicleFaceColors[4, i]];
-                ((Button)cubeNetBottom.Children[i]).Background = _cubeColors[cubicleFaceColors[5, i]];
+                ((Button)cubeNetBack.Children[i]).Background = _cubeColors[_cubicleFaceColors[0, i]];
+                ((Button)cubeNetLeft.Children[i]).Background = _cubeColors[_cubicleFaceColors[1, i]];
+                ((Button)cubeNetTop.Children[i]).Background = _cubeColors[_cubicleFaceColors[2, i]];
+                ((Button)cubeNetRight.Children[i]).Background = _cubeColors[_cubicleFaceColors[3, i]];
+                ((Button)cubeNetFront.Children[i]).Background = _cubeColors[_cubicleFaceColors[4, i]];
+                ((Button)cubeNetBottom.Children[i]).Background = _cubeColors[_cubicleFaceColors[5, i]];
             }
 
             progressBar.Value = 0;
-            cube = new Cube();
-            cube.ReDraw();
+            _cube = new Cube();
+            _cube.Redraw(cubeGeometry.Children);
         }
     }
 }

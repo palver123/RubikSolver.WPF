@@ -18,8 +18,8 @@ namespace RubikSolver.AI.Recipes
         {
             CheckParameterCount(parameters.Length);
 
-            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]].center);
-            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]].center);
+            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]]._center);
+            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]]._center);
 
             if (cube._state ==  Cube.Completeness.Solved && ingredient1.inPlace && ingredient2.inPlace && ingredient1.GetFacet(5).color != 5 && ingredient2.GetFacet(5).color != 5)
             {

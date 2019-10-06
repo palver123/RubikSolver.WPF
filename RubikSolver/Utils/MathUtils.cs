@@ -23,7 +23,7 @@ namespace RubikSolver.Utils
             return pitchRotation * yawRotation;
         }
 
-        private static Matrix3D RotationFromAxisAngle(ref Vector3D axis, double angleY)
+        internal static Matrix3D RotationFromAxisAngle(ref Vector3D axis, double angleY)
         {
             var sinA = Math.Sin(angleY);
             var cosA = Math.Cos(angleY);

@@ -26,10 +26,10 @@ namespace RubikSolver.AI
             #region Vertical edges
 
             var secondRowEdges = new[] {
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 2].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 2].center)
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 2]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 2]._center)
                 };
             while (!secondRowEdges[0].inPlace || !secondRowEdges[1].inPlace || !secondRowEdges[2].inPlace || !secondRowEdges[3].inPlace)
             {
@@ -45,10 +45,10 @@ namespace RubikSolver.AI
                     counter = 0;
 
                 secondRowEdges = new[] {
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 2].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 2].center)
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 2]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 2]._center)
                 };
                 CheckPositions(cube);
                 if (!secondRowEdges[0].inPlace || !secondRowEdges[1].inPlace || !secondRowEdges[2].inPlace || !secondRowEdges[3].inPlace)
@@ -69,10 +69,10 @@ namespace RubikSolver.AI
                 }
                 CheckPositions(cube);
                 secondRowEdges = new[] {
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 2].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 2].center)
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 0, 2]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[1, 2, 2]._center)
                 };
             }
 
@@ -83,10 +83,10 @@ namespace RubikSolver.AI
             if (IsSolved(cube)) return true;
             counter = 0;
             var bottomCorners = new[] {
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 2].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 2].center)
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 2]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 2]._center)
                 };
 
             while (counter < 4 && (!bottomCorners[0].inPlace || !bottomCorners[1].inPlace || !bottomCorners[2].inPlace || !bottomCorners[3].inPlace))
@@ -96,19 +96,19 @@ namespace RubikSolver.AI
                 Library.recipes[33].TryToApply(cube, 4, 3, 3, 0, 0, 1, 3, 4, 0, 3, 1, 0, 4, 1);
                 Library.recipes[34].TryToApply(cube, 3, 0, 0, 1, 1, 4, 0, 3, 1, 0, 4, 1, 3, 4);
                 bottomCorners = new[] {
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 2].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 2].center)
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 2]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 2]._center)
                 };
                 CheckPositions(cube);
                 if (!bottomCorners[0].inPlace || !bottomCorners[1].inPlace || !bottomCorners[2].inPlace || !bottomCorners[3].inPlace) Library.recipes[66].Apply(cube);
                 CheckPositions(cube);
                 bottomCorners = new[] {
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 2].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 2].center)
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 2]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 2]._center)
                 };
                 counter++;
             }
@@ -136,10 +136,10 @@ namespace RubikSolver.AI
 
                 bottomCornerSolved[0] = bottomCornerSolved[1] = bottomCornerSolved[2] = bottomCornerSolved[3] = true;
                 bottomCorners = new[] {
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 2].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 0].center),
-                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 2].center)
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 0, 2]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 0]._center),
+                    cube.GetCubicleByCenter(solvedCube._cubicles[0, 2, 2]._center)
                 };
                 for (var j = 0; j < 6; j++)
                 {

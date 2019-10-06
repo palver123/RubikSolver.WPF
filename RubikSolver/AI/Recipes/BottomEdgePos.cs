@@ -18,14 +18,14 @@ namespace RubikSolver.AI.Recipes
         {
             CheckParameterCount(parameters.Length);
 
-            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]].center);
-            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]].center);
-            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]].center);
+            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]]._center);
+            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]]._center);
+            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]]._center);
             if (!ingredient1.inPlace && !ingredient2.inPlace && !ingredient3.inPlace)
             {
-                var solvedC1 = Solver.solvedCube.GetCubicleByFacetColors(ingredient1.facets).center;
-                var solvedC2 = Solver.solvedCube.GetCubicleByFacetColors(ingredient2.facets).center;
-                var solvedC3 = Solver.solvedCube.GetCubicleByFacetColors(ingredient3.facets).center;
+                var solvedC1 = Solver.solvedCube.GetCubicleByFacetColors(ingredient1.facets)._center;
+                var solvedC2 = Solver.solvedCube.GetCubicleByFacetColors(ingredient2.facets)._center;
+                var solvedC3 = Solver.solvedCube.GetCubicleByFacetColors(ingredient3.facets)._center;
 
                 if (_direction)
                 {

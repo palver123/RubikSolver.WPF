@@ -18,9 +18,9 @@ namespace RubikSolver.AI.Recipes
         {
             CheckParameterCount(parameters.Length);
 
-            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]].center);
-            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]].center);
-            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]].center);
+            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]]._center);
+            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]]._center);
+            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]]._center);
             if (_direction)
             {
                 var temp = ingredient1.virtualCenter;
@@ -63,15 +63,15 @@ namespace RubikSolver.AI.Recipes
         {
             CheckParameterCount(parameters.Length);
 
-            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]].center);
-            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]].center);
-            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]].center);
+            var ingredient1 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]]._center);
+            var ingredient2 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]]._center);
+            var ingredient3 = cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]]._center);
             if (!ingredient1.inPlace && !ingredient2.inPlace && !ingredient3.inPlace)
             {
                 if (_direction)
                 {
                     var solvedC1 = Solver.solvedCube.GetCubicleByFacetColors(ingredient1.facets);
-                    if (ingredient2.virtualCenter != solvedC1.center || ingredient1.GetFacet(parameters[0]).color != solvedC1.GetFacet(GetOppositeFacet(parameters[0])).color) return false;
+                    if (ingredient2.virtualCenter != solvedC1._center || ingredient1.GetFacet(parameters[0]).color != solvedC1.GetFacet(GetOppositeFacet(parameters[0])).color) return false;
 
                     var temp = ingredient1.virtualCenter;
                     ingredient1.virtualCenter = ingredient2.virtualCenter;
@@ -88,7 +88,7 @@ namespace RubikSolver.AI.Recipes
                 else
                 {
                     var solvedC2 = Solver.solvedCube.GetCubicleByFacetColors(ingredient2.facets);
-                    if (ingredient1.virtualCenter != solvedC2.center || ingredient2.GetFacet(GetOppositeFacet(parameters[0])).color != solvedC2.GetFacet(parameters[0]).color) return false;
+                    if (ingredient1.virtualCenter != solvedC2._center || ingredient2.GetFacet(GetOppositeFacet(parameters[0])).color != solvedC2.GetFacet(parameters[0]).color) return false;
 
                     var temp = ingredient1.virtualCenter;
                     ingredient1.virtualCenter = ingredient3.virtualCenter;

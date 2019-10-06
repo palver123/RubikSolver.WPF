@@ -19,20 +19,20 @@ namespace RubikSolver.AI.Recipes
             CheckParameterCount(parameters.Length);
 
             var ingredientCubicles = new[] {
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[9], _ingredients[10], _ingredients[11]].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[12], _ingredients[13], _ingredients[14]].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[15], _ingredients[16], _ingredients[17]].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[18], _ingredients[19], _ingredients[20]].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[21], _ingredients[22], _ingredients[23]].center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[6], _ingredients[7], _ingredients[8]]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[9], _ingredients[10], _ingredients[11]]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[12], _ingredients[13], _ingredients[14]]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[15], _ingredients[16], _ingredients[17]]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[18], _ingredients[19], _ingredients[20]]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[_ingredients[21], _ingredients[22], _ingredients[23]]._center),
             };
 
             if (cube._state ==  Cube.Completeness.SecondRowComplete && !ingredientCubicles[0].inPlace && !ingredientCubicles[5].inPlace)
             {
-                var solved1 = Solver.solvedCube.GetCubicleByFacetColors(ingredientCubicles[0].facets).center;
-                var solved2 = Solver.solvedCube.GetCubicleByFacetColors(ingredientCubicles[5].facets).center;
+                var solved1 = Solver.solvedCube.GetCubicleByFacetColors(ingredientCubicles[0].facets)._center;
+                var solved2 = Solver.solvedCube.GetCubicleByFacetColors(ingredientCubicles[5].facets)._center;
                 if (ingredientCubicles[0].virtualCenter != solved2 || ingredientCubicles[5].virtualCenter != solved1)
                     return false;
 

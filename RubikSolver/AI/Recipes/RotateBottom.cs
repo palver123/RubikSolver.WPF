@@ -14,22 +14,22 @@ namespace RubikSolver.AI.Recipes
         public void Apply(Cube cube, params int[] parameters)
         {
             var ingredientCubicles = new[] {
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 0, 0].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 0, 1].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 0, 2].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 1, 0].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 1, 1].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 1, 2].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 2, 0].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 2, 1].center),
-                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 2, 2].center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 0, 0]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 0, 1]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 0, 2]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 1, 0]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 1, 1]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 1, 2]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 2, 0]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 2, 1]._center),
+                cube.GetCubicleByCenter(Solver.solvedCube._cubicles[0, 2, 2]._center),
             };
 
             var rotationMatrix = new Matrix3D(0, 1, 0, 0,
                                                    -1, 0, 0, 0,
                                                    0, 0, 1, 0,
                                                    0, 0, 0, 1);
-            var centerOfRotation = Solver.solvedCube._cubicles[0, 1, 1].center;
+            var centerOfRotation = Solver.solvedCube._cubicles[0, 1, 1]._center;
             for (var i = 0; i < 9; i++)
             {
                 ingredientCubicles[i].virtualCenter = (ingredientCubicles[i].virtualCenter - centerOfRotation) * rotationMatrix + centerOfRotation;

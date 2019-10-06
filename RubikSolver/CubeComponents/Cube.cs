@@ -37,6 +37,13 @@ namespace RubikSolver.CubeComponents
         }
 
         /// <summary>
+        /// Size of the padding between cubicles.
+        /// </summary>
+        private const double PADDING_SIZE = 1;
+
+        internal const double OFFSET = Cubicle.SIZE + PADDING_SIZE;
+
+        /// <summary>
         /// This is for the animation. 0 if the cube should stand still. A face rotation consists of 9 * 10 degree rotations - this sums up to 90 degrees -
         /// </summary>
         public int _turnState;
@@ -62,86 +69,88 @@ namespace RubikSolver.CubeComponents
         {
             _cubicles = new Cubicle[3, 3, 3];
             for (var i = 0; i < 3; i++)
-                for (var j = 0; j < 3; j++)
-                    for (var k = 0; k < 3; k++)
-                    {
-                        _cubicles[i, j, k] = new Cubicle(Cubicle.SIZE, new Vector3D((j - 3 / 2) * Cubicle.SIZE * 1.1, (k - 3 / 2) * Cubicle.SIZE * 1.1, (i - 3 / 2) * Cubicle.SIZE * 1.1), i, j, k);
-                    }
+            for (var j = 0; j < 3; j++)
+            for (var k = 0; k < 3; k++)
+            {
+                var center = new Vector3D((j - 3 / 2) * OFFSET, (k - 3 / 2) * OFFSET, (i - 3 / 2) * OFFSET);
+                _cubicles[i, j, k] = new Cubicle(Cubicle.SIZE, center, i, j, k);
+            }
             _transformations = new StringBuilder();
             _currentTransformIndex = -1;
             _turnState = 0;
             _state = Completeness.Scrambled;
         }
 
-        public void AnimateFaceRotation()
+        public void AnimateFaceRotation(Model3DCollection geometry)
         {
             // this bool is true if we apply a transform, false if we apply its inverse (inverse of a quarter turn means applying it in the opposite isInverse)
             var isInverse = _turnState < 0;
+            const double halfSize = Cubicle.SIZE / 2;
             switch (_transformations[_currentTransformIndex])
             {
                 case 'B':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.X < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(-Cubicle.SIZE * 1.1, 0, 0), new Vector3D(-1, 0, 0), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.X < -halfSize) cubicle.Rotate(new Vector3D(-1, 0, 0), !isInverse);
                     break;
                 case 'b':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.X < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(-Cubicle.SIZE * 1.1, 0, 0), new Vector3D(-1, 0, 0), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.X < -halfSize) cubicle.Rotate(new Vector3D(-1, 0, 0), isInverse);
                     break;
                 case 'L':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Y < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, -Cubicle.SIZE * 1.1, 0), new Vector3D(0, -1, 0), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.Y < -halfSize) cubicle.Rotate(new Vector3D(0, -1, 0), !isInverse);
                     break;
                 case 'l':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Y < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, -Cubicle.SIZE * 1.1, 0), new Vector3D(0, -1, 0), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.Y < -halfSize) cubicle.Rotate(new Vector3D(0, -1, 0), isInverse);
                     break;
                 case 'U':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Z > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, Cubicle.SIZE * 1.1), new Vector3D(0, 0, 1), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.Z > halfSize) cubicle.Rotate(new Vector3D(0, 0, 1), !isInverse);
                     break;
                 case 'u':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Z > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, Cubicle.SIZE * 1.1), new Vector3D(0, 0, 1), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.Z > halfSize) cubicle.Rotate(new Vector3D(0, 0, 1), isInverse);
                     break;
                 case 'R':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Y > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, Cubicle.SIZE * 1.1, 0), new Vector3D(0, 1, 0), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.Y > halfSize) cubicle.Rotate(new Vector3D(0, 1, 0), !isInverse);
                     break;
                 case 'r':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Y > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, Cubicle.SIZE * 1.1, 0), new Vector3D(0, 1, 0), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.Y > halfSize) cubicle.Rotate(new Vector3D(0, 1, 0), isInverse);
                     break;
                 case 'F':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.X > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(Cubicle.SIZE * 1.1, 0, 0), new Vector3D(1, 0, 0), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.X > halfSize) cubicle.Rotate(new Vector3D(1, 0, 0), !isInverse);
                     break;
                 case 'f':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.X > Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(Cubicle.SIZE * 1.1, 0, 0), new Vector3D(1, 0, 0), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.X > halfSize) cubicle.Rotate(new Vector3D(1, 0, 0), isInverse);
                     break;
                 case 'D':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Z < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, -Cubicle.SIZE * 1.1), new Vector3D(0, 0, -1), !isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.Z < -halfSize) cubicle.Rotate(new Vector3D(0, 0, -1), !isInverse);
                     break;
                 case 'd':
-                    foreach (var cubicle in _cubicles) if (cubicle.center.Z < -Cubicle.SIZE / 2.0) cubicle.Rotate(new Vector3D(0, 0, -Cubicle.SIZE * 1.1), new Vector3D(0, 0, -1), isInverse);
+                    foreach (var cubicle in _cubicles) if (cubicle._center.Z < -halfSize) cubicle.Rotate(new Vector3D(0, 0, -1), isInverse);
                     break;
                 default:
                     System.Windows.MessageBox.Show("Cannot read recipe!", "Error!");
                     break;
             }
-            if (_turnState > 0) _turnState--;
+
+            if (_turnState > 0)
+                _turnState--;
             else if (_turnState < 0)
             {
                 _turnState++;
-                if (_turnState == 0) _currentTransformIndex--;
+                if (_turnState == 0)
+                    _currentTransformIndex--;
             }
-            ReDraw();
+
+            Redraw(geometry);
         }
 
-        public void ReDraw()
+        public void Redraw(Model3DCollection geometry)
         {
-            var numberOfCubicles = Cubicle.viewport.Children.Count;
-            for (var n = 1; n < numberOfCubicles; n++)
-            {
-                Cubicle.viewport.Children.RemoveAt(1);
-            }
+            geometry.Clear();
             for (var i = 0; i < 3; i++)
-                for (var j = 0; j < 3; j++)
-                    for (var k = 0; k < 3; k++)
-                    {
-                        // size of a cubicle is 10 units with 1 unit padding between them
-                        _cubicles[i, j, k].ReDraw(i, j, k);
-                    }
+            for (var j = 0; j < 3; j++)
+            for (var k = 0; k < 3; k++)
+            {
+                // size of a cubicle is 10 units with 1 unit padding between them
+                geometry.Add(_cubicles[i, j, k].GetGeometry(i, j, k));
+            }
         }
 
         public Cubicle GetCubicleByCenter(Vector3D center)

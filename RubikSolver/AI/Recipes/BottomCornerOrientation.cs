@@ -20,8 +20,8 @@ namespace RubikSolver.AI.Recipes
 
             var solvedIngredient1 = Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]];
             var solvedIngredient2 = Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]];
-            var ingredient1 = cube.GetCubicleByCenter(solvedIngredient1.center);
-            var ingredient2 = cube.GetCubicleByCenter(solvedIngredient2.center);
+            var ingredient1 = cube.GetCubicleByCenter(solvedIngredient1._center);
+            var ingredient2 = cube.GetCubicleByCenter(solvedIngredient2._center);
 
             if (cube._state == Cube.Completeness.BottomCornersOK && ingredient1.inPlace && ingredient2.inPlace)
             {
@@ -58,8 +58,8 @@ namespace RubikSolver.AI.Recipes
 
             var solvedIngredient1 = Solver.solvedCube._cubicles[_ingredients[0], _ingredients[1], _ingredients[2]];
             var solvedIngredient2 = Solver.solvedCube._cubicles[_ingredients[3], _ingredients[4], _ingredients[5]];
-            var c1 = cube.GetCubicleByCenter(solvedIngredient1.center);
-            var c2 = cube.GetCubicleByCenter(solvedIngredient2.center);
+            var c1 = cube.GetCubicleByCenter(solvedIngredient1._center);
+            var c2 = cube.GetCubicleByCenter(solvedIngredient2._center);
 
             if (cube._state == Cube.Completeness.BottomCornersOK && c1.inPlace && c2.inPlace)
             {
