@@ -51,6 +51,5 @@ namespace RubikSolver.Utils
 
                     0, 0, 0, 1);
         }
-
     }
 }

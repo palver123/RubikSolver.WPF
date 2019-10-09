@@ -69,12 +69,19 @@ namespace RubikSolver.CubeComponents
         {
             _cubicles = new Cubicle[3, 3, 3];
             for (var i = 0; i < 3; i++)
-            for (var j = 0; j < 3; j++)
-            for (var k = 0; k < 3; k++)
             {
-                var center = new Vector3D((j - 3 / 2) * OFFSET, (k - 3 / 2) * OFFSET, (i - 3 / 2) * OFFSET);
-                _cubicles[i, j, k] = new Cubicle(Cubicle.SIZE, center, i, j, k);
+                var z = (i - 3 / 2) * OFFSET;
+                for (var j = 0; j < 3; j++)
+                {
+                    var x = (j - 3 / 2) * OFFSET;
+                    for (var k = 0; k < 3; k++)
+                    {
+                        var y = (k - 3 / 2) * OFFSET;
+                        _cubicles[i, j, k] = new Cubicle(Cubicle.SIZE, new Vector3D(x, y, z), i, j, k);
+                    }
+                }
             }
+
             _transformations = new StringBuilder();
             _currentTransformIndex = -1;
             _turnState = 0;
@@ -145,12 +152,9 @@ namespace RubikSolver.CubeComponents
         {
             geometry.Clear();
             for (var i = 0; i < 3; i++)
-            for (var j = 0; j < 3; j++)
-            for (var k = 0; k < 3; k++)
-            {
-                // size of a cubicle is 10 units with 1 unit padding between them
-                geometry.Add(_cubicles[i, j, k].GetGeometry(i, j, k));
-            }
+                for (var j = 0; j < 3; j++)
+                    for (var k = 0; k < 3; k++)
+                        geometry.Add(_cubicles[i, j, k].GetGeometry(i, j, k));
         }
 
         public Cubicle GetCubicleByCenter(Vector3D center)
